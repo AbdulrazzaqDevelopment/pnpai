@@ -1,0 +1,45 @@
+# Senior — PNPAI role profile
+# Full contributor. Can merge, can review, can hotfix.
+
+name: senior
+description: Full contributor. Can merge, can review, can hotfix.
+
+capabilities:
+  may_create_work_item: true
+  may_activate_work_item: true
+  may_create_branch: true
+  may_push: true
+  may_open_pr: true
+  may_merge_pr: true
+  may_force_push: false
+  may_modify_main: false
+  may_modify_base_branch: false
+  may_hotfix: true
+  may_skip_clarifying_questions: true
+  may_self_promote: true
+
+defaults:
+  base_branch: development
+  reviewer_role: peer
+  pr_description_template: delta-only
+  branch_prefix:
+    feature: feat
+    bug: fix
+    chore: chore
+
+mandatory_phases:
+  - discovery
+  - work_item_integrity_check
+  - verification
+  - pr_handoff
+
+mandatory_subagents:
+  - researcher
+  - explorer
+  - verifier
+
+forbidden:
+  - "git push --force"
+  - "git push -f"
+  - "git push origin main"
+  - "git push origin master"

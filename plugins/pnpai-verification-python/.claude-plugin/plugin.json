@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/hesreallyhim/claude-code-json-schema/main/schemas/plugin.schema.json",
+  "name": "pnpai-verification-python",
+  "version": "1.0.0",
+  "description": "PNPAI verification preset for python projects.",
+  "author": {
+    "name": "PNPAI Maintainers",
+    "email": "allafta.mohammed@gmail.com"
+  },
+  "homepage": "https://github.com/abdulrazzaqdevelopment/pnpai",
+  "repository": "https://github.com/abdulrazzaqdevelopment/pnpai",
+  "license": "MIT",
+  "keywords": [
+    "pnpai",
+    "verification",
+    "python",
+    "ai-built"
+  ],
+  "pnpai_metadata": {
+    "claude_code_features": [],
+    "portability": "fully-portable",
+    "portability_notes": "Plain YAML preset declaring verification commands. Any system that can execute shell commands and parse YAML can consume this.",
+    "ai_authored": true
+  }
+}

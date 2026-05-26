@@ -1,0 +1,31 @@
+# PNPAI verification — Python preset
+#
+# Adjust commands to match your tooling (pyright vs mypy, ruff vs flake8, etc).
+
+typecheck:
+  command: "pyright"               # or "mypy ."
+  pass_on_exit: 0
+  parse:
+    errors: 'error:'
+
+lint:
+  command: "ruff check ."
+  pass_on_exit: 0
+  parse:
+    errors: 'Found (\d+) error'
+
+test:
+  command: "pytest -q"
+  pass_on_exit: 0
+  parse:
+    tests: '(\d+) passed'
+    failed: '(\d+) failed'
+
+build:
+  command: "python -m build"
+  pass_on_exit: 0
+
+# Uncomment for security scan:
+# security_scan:
+#   command: "bandit -r src/"
+#   pass_on_exit: 0

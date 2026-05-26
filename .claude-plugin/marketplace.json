@@ -1,0 +1,78 @@
+{
+  "$schema": "https://raw.githubusercontent.com/hesreallyhim/claude-code-json-schema/main/schemas/marketplace.schema.json",
+  "name": "pnpai",
+  "owner": {
+    "name": "AbdulrazzaqDevelopment",
+    "email": "allafta.mohammed@gmail.com"
+  },
+  "metadata": {
+    "description": "PNPAIDevelopmentAgency — plug-and-play AI development workflow for Claude Code. Two role profiles, two platform adapters, hard guardrails.",
+    "version": "1.0.0",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "pnpai-core",
+      "source": "pnpai-core",
+      "description": "Orchestration skill, three subagents (Researcher, Explorer, Verifier), pre/post-tool-use hooks. Required.",
+      "version": "1.0.0",
+      "author": { "name": "AbdulrazzaqDevelopment" },
+      "category": "workflow",
+      "tags": ["core", "orchestration", "required"]
+    },
+    {
+      "name": "pnpai-role-trainee",
+      "source": "pnpai-role-trainee",
+      "description": "Junior role. Opens PRs; hooks block merge, force-push, and writes to base branches.",
+      "version": "1.0.0",
+      "author": { "name": "AbdulrazzaqDevelopment" },
+      "category": "role",
+      "tags": ["role", "junior", "guardrailed"]
+    },
+    {
+      "name": "pnpai-role-senior",
+      "source": "pnpai-role-senior",
+      "description": "Full contributor role. Can merge, can hotfix. Verifier still mandatory.",
+      "version": "1.0.0",
+      "author": { "name": "AbdulrazzaqDevelopment" },
+      "category": "role",
+      "tags": ["role", "senior"]
+    },
+    {
+      "name": "pnpai-platform-github",
+      "source": "pnpai-platform-github",
+      "description": "GitHub Issues + PRs adapter. Maps abstract operations to mcp__github__*.",
+      "version": "1.0.0",
+      "author": { "name": "AbdulrazzaqDevelopment" },
+      "category": "platform",
+      "tags": ["platform", "github"]
+    },
+    {
+      "name": "pnpai-platform-azure-devops",
+      "source": "pnpai-platform-azure-devops",
+      "description": "Azure DevOps Boards + Repos adapter. Maps abstract operations to mcp__azure-devops__*.",
+      "version": "1.0.0",
+      "author": { "name": "AbdulrazzaqDevelopment" },
+      "category": "platform",
+      "tags": ["platform", "azure-devops", "ado"]
+    },
+    {
+      "name": "pnpai-verification-node",
+      "source": "pnpai-verification-node",
+      "description": "Verifier preset for Node / TypeScript projects.",
+      "version": "1.0.0",
+      "author": { "name": "AbdulrazzaqDevelopment" },
+      "category": "verification",
+      "tags": ["verification", "node", "typescript"]
+    },
+    {
+      "name": "pnpai-verification-python",
+      "source": "pnpai-verification-python",
+      "description": "Verifier preset for Python projects.",
+      "version": "1.0.0",
+      "author": { "name": "AbdulrazzaqDevelopment" },
+      "category": "verification",
+      "tags": ["verification", "python"]
+    }
+  ]
+}

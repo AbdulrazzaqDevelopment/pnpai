@@ -1,0 +1,53 @@
+# Trainee — PNPAI role profile
+#
+# Junior contributor. Opens PRs, never merges. Mandatory senior review.
+#
+# Copy or symlink to .claude/config/roles/trainee.yaml in your repo, or let
+# `pnpai init` do it for you. The feature-workflow skill resolves this file
+# from .claude/config/roles/ first; if absent, falls back to the bundled copy.
+
+name: trainee
+description: Junior contributor. Opens PRs, never merges. Mandatory senior review.
+
+capabilities:
+  may_create_work_item: true
+  may_activate_work_item: true
+  may_create_branch: true
+  may_push: true
+  may_open_pr: true
+  may_merge_pr: false
+  may_force_push: false
+  may_modify_main: false
+  may_modify_base_branch: false
+  may_skip_verifier: false
+  may_skip_explorer: false
+  may_skip_clarifying_questions: false
+
+defaults:
+  base_branch: development
+  reviewer_role: senior
+  pr_description_template: delta-only
+  branch_prefix:
+    feature: feat
+    bug: fix
+    chore: chore
+
+mandatory_phases:
+  - discovery
+  - work_item_integrity_check
+  - branch_freshness_check
+  - verification
+  - pr_handoff
+
+mandatory_subagents:
+  - researcher
+  - explorer
+  - verifier
+
+forbidden:
+  - "git push --force"
+  - "git push -f"
+  - "git push origin main"
+  - "git push origin master"
+  - "git push origin development"
+  - "wit_update_work_item state=Closed"

@@ -1,0 +1,45 @@
+{
+  "name": "pnpai",
+  "version": "1.0.0",
+  "description": "PNPAIDevelopmentAgency — plug-and-play AI development workflow for Claude Code. Role-aware orchestration, three subagents, OS-level guardrails. AI-built; read DISCLAIMER.md.",
+  "type": "module",
+  "bin": {
+    "pnpai": "bin/pnpai.mjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "test": "node --test test/smoke.test.mjs",
+    "lint": "node bin/pnpai.mjs version",
+    "doctor": "node bin/pnpai.mjs doctor"
+  },
+  "keywords": [
+    "claude-code",
+    "claude",
+    "anthropic",
+    "agent",
+    "workflow",
+    "ai-built",
+    "ai-authored",
+    "azure-devops",
+    "github"
+  ],
+  "homepage": "https://github.com/abdulrazzaqdevelopment/pnpai",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abdulrazzaqdevelopment/pnpai.git"
+  },
+  "bugs": {
+    "url": "https://github.com/abdulrazzaqdevelopment/pnpai/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "bin/",
+    "plugins/",
+    ".claude-plugin/",
+    "docs/",
+    "README.md",
+    "LICENSE"
+  ]
+}

@@ -1,0 +1,36 @@
+# PNPAI verification — Node / TypeScript preset
+#
+# Copy to .claude/config/verification.yaml and edit script names to match
+# your package.json. Each command is independently optional — comment out
+# what you don't have. The Verifier will report `n/a` for omitted commands.
+
+typecheck:
+  command: "npm run typecheck"     # or "tsc -b --noEmit"
+  pass_on_exit: 0
+  parse:
+    errors: 'error TS\d+'
+
+lint:
+  command: "npm run lint"          # or "eslint ."
+  pass_on_exit: 0
+  parse:
+    errors: ' error '
+    warnings: ' warning '
+
+test:
+  command: "npm test"              # vitest run / jest / etc.
+  pass_on_exit: 0
+  parse:
+    tests: '(\d+) passed'
+    failed: '(\d+) failed'
+
+build:
+  command: "npm run build"
+  pass_on_exit: 0
+
+# Uncomment if you have e2e:
+# e2e_smoke:
+#   command: "npm run test:e2e:smoke"
+#   pass_on_exit: 0
+#   required_for_paths:
+#     - "src/**"

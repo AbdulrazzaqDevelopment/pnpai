@@ -1,0 +1,45 @@
+# Azure DevOps — PNPAI platform adapter
+# Maps abstract operations (used by the orchestration skill and subagents)
+# to concrete mcp__azure-devops__* tool names.
+
+name: azure-devops
+mcp_server: azure-devops
+
+operations:
+  fetch_work_item:    "mcp__azure-devops__wit_get_work_item"
+  query_work_items:   "mcp__azure-devops__wit_query_by_wiql"
+  create_work_item:   "mcp__azure-devops__wit_create_work_item"
+  update_work_item:   "mcp__azure-devops__wit_update_work_item"
+  comment_work_item:  "mcp__azure-devops__wit_add_work_item_comment"
+  link_work_items:    "mcp__azure-devops__wit_work_items_link"
+  create_branch:      "mcp__azure-devops__repo_create_branch"
+  list_branches:      "mcp__azure-devops__repo_list_branches_by_repo"
+  create_pr:          "mcp__azure-devops__repo_create_pull_request"
+  set_pr_reviewers:   "mcp__azure-devops__repo_update_pull_request_reviewers"
+  list_pr_threads:    "mcp__azure-devops__repo_list_pull_request_threads"
+  get_pr_changes:     "mcp__azure-devops__repo_get_pull_request_changes"
+
+work_item_types:
+  feature: "User Story"
+  bug:     "Bug"
+  subtask: "Task"
+
+work_item_states:
+  active:  "Active"
+  done:    "Closed"
+  removed: "Removed"
+  testing: "Testing"
+
+constraints:
+  pr_description_max_chars: 4000
+  pr_title_max_chars: 256
+  state_transitions_strict: true
+
+work_item_template_required: true
+required_sections:
+  - Context
+  - Scope
+  - Acceptance Criteria
+  - Verification
+  - Files
+  - Notes

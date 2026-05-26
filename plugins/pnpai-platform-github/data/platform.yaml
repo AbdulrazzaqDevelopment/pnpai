@@ -1,0 +1,49 @@
+# GitHub — PNPAI platform adapter
+
+name: github
+mcp_server: github
+
+operations:
+  fetch_work_item:    "mcp__github__get_issue"
+  query_work_items:   "mcp__github__list_issues"
+  create_work_item:   "mcp__github__create_issue"
+  update_work_item:   "mcp__github__update_issue"
+  comment_work_item:  "mcp__github__add_issue_comment"
+  link_work_items:    null                            # GitHub handles via PR body "Closes #N"
+  create_branch:      "mcp__github__create_branch"
+  list_branches:      "mcp__github__list_branches"
+  create_pr:          "mcp__github__create_pull_request"
+  set_pr_reviewers:   "mcp__github__request_pr_reviewers"
+  list_pr_threads:    "mcp__github__list_review_comments"
+  get_pr_changes:     "mcp__github__get_pr_files"
+
+work_item_types:
+  feature: "issue"
+  bug:     "issue"
+  subtask: "issue"
+
+work_item_states:
+  active:  "open"
+  done:    "closed"
+  removed: "closed"          # mark with `wontfix` label
+  testing: null              # no equivalent
+
+constraints:
+  pr_description_max_chars: 65536
+  pr_title_max_chars: 256
+  state_transitions_strict: false
+
+work_item_template_required: true
+required_sections:
+  - Context
+  - Scope
+  - Acceptance Criteria
+  - Verification
+  - Files
+  - Notes
+
+auto_close_keyword: "Closes"
+labels:
+  feature: ["enhancement"]
+  bug: ["bug"]
+  subtask: ["task"]

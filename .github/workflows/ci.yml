@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Test (${{ matrix.os }}, Node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: ['20', '22']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Smoke tests
+        run: npm test
+
+      - name: CLI version
+        run: node bin/pnpai.mjs version
+
+      - name: CLI help
+        run: node bin/pnpai.mjs help
+
+      - name: CLI add (known plugin)
+        run: node bin/pnpai.mjs add pnpai-role-trainee
+
+      - name: CLI add (unknown plugin must fail)
+        shell: bash
+        run: |
+          if node bin/pnpai.mjs add bogus-plugin; then
+            echo "Expected non-zero exit"; exit 1
+          fi
+          echo "OK: unknown plugin rejected"
+
+      - name: Hook blocks forbidden action
+        shell: bash
+        run: |
+          tmp=$(mktemp -d)
+          mkdir -p "$tmp/.claude/config/roles"
+          (cd "$tmp" && git init -q && git config user.email t@e.x && git config user.name t)
+          printf 'active: trainee\n' > "$tmp/.claude/config/role.yaml"
+          printf 'name: trainee\nforbidden:\n  - "git push --force"\n' > "$tmp/.claude/config/roles/trainee.yaml"
+          cd "$tmp"
+
+          echo '{"tool_name":"Bash","tool_input":{"command":"git push --force"}}' \
+            | node "$GITHUB_WORKSPACE/plugins/pnpai-core/hooks/pre-tool-use.mjs" 2>/dev/null \
+            && block_ec=0 || block_ec=$?
+          if [ "$block_ec" != "2" ]; then
+            echo "FAIL: forbidden action should exit 2, got $block_ec"; exit 1
+          fi
+          echo "OK: forbidden action blocked (exit 2)"
+
+          echo '{"tool_name":"Bash","tool_input":{"command":"git status"}}' \
+            | node "$GITHUB_WORKSPACE/plugins/pnpai-core/hooks/pre-tool-use.mjs" \
+            && allow_ec=0 || allow_ec=$?
+          if [ "$allow_ec" != "0" ]; then
+            echo "FAIL: safe action should exit 0, got $allow_ec"; exit 1
+          fi
+          echo "OK: safe action allowed (exit 0)"

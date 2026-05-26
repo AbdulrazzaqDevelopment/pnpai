@@ -1,0 +1,56 @@
+{
+  "$schema": "https://raw.githubusercontent.com/hesreallyhim/claude-code-json-schema/main/schemas/plugin.schema.json",
+  "name": "pnpai-core",
+  "version": "1.0.0",
+  "description": "Core orchestration skill, 3 subagents (Researcher, Explorer, Verifier), pre/post tool-use hooks, and slash commands. Required by every other PNPAI plugin.",
+  "author": {
+    "name": "AbdulrazzaqDevelopment",
+    "email": "allafta.mohammed@gmail.com",
+    "url": "https://github.com/abdulrazzaqdevelopment/pnpai"
+  },
+  "homepage": "https://github.com/abdulrazzaqdevelopment/pnpai",
+  "repository": "https://github.com/abdulrazzaqdevelopment/pnpai",
+  "license": "MIT",
+  "keywords": [
+    "workflow",
+    "orchestration",
+    "subagents",
+    "core",
+    "ai-built"
+  ],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/pre-tool-use.mjs\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/post-tool-use.mjs\""
+          }
+        ]
+      }
+    ]
+  },
+  "pnpai_metadata": {
+    "claude_code_features": [
+      "skills",
+      "subagents",
+      "hooks",
+      "slash-commands"
+    ],
+    "portability": "claude-code-specific",
+    "portability_notes": "The skill, subagents, hooks, and commands all use Claude Code's runtime primitives. The skill body and subagent definitions are markdown and can be repurposed as system prompts for other LLM systems. Hooks are written in pure Node.js (no external dependencies) and can be wired to any event system that can invoke a Node script with JSON on stdin.",
+    "ai_authored": true
+  }
+}
