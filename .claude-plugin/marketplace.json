@@ -13,7 +13,7 @@
   "plugins": [
     {
       "name": "pnpai-core",
-      "source": "pnpai-core",
+      "source": "./plugins/pnpai-core",
       "description": "Orchestration skill, three subagents (Researcher, Explorer, Verifier), pre/post-tool-use hooks. Required.",
       "version": "1.0.0",
       "author": { "name": "AbdulrazzaqDevelopment" },
@@ -22,7 +22,7 @@
     },
     {
       "name": "pnpai-role-trainee",
-      "source": "pnpai-role-trainee",
+      "source": "./plugins/pnpai-role-trainee",
       "description": "Junior role. Opens PRs; hooks block merge, force-push, and writes to base branches.",
       "version": "1.0.0",
       "author": { "name": "AbdulrazzaqDevelopment" },
@@ -31,7 +31,7 @@
     },
     {
       "name": "pnpai-role-senior",
-      "source": "pnpai-role-senior",
+      "source": "./plugins/pnpai-role-senior",
       "description": "Full contributor role. Can merge, can hotfix. Verifier still mandatory.",
       "version": "1.0.0",
       "author": { "name": "AbdulrazzaqDevelopment" },
@@ -40,7 +40,7 @@
     },
     {
       "name": "pnpai-platform-github",
-      "source": "pnpai-platform-github",
+      "source": "./plugins/pnpai-platform-github",
       "description": "GitHub Issues + PRs adapter. Maps abstract operations to mcp__github__*.",
       "version": "1.0.0",
       "author": { "name": "AbdulrazzaqDevelopment" },
@@ -49,7 +49,7 @@
     },
     {
       "name": "pnpai-platform-azure-devops",
-      "source": "pnpai-platform-azure-devops",
+      "source": "./plugins/pnpai-platform-azure-devops",
       "description": "Azure DevOps Boards + Repos adapter. Maps abstract operations to mcp__azure-devops__*.",
       "version": "1.0.0",
       "author": { "name": "AbdulrazzaqDevelopment" },
@@ -58,7 +58,7 @@
     },
     {
       "name": "pnpai-verification-node",
-      "source": "pnpai-verification-node",
+      "source": "./plugins/pnpai-verification-node",
       "description": "Verifier preset for Node / TypeScript projects.",
       "version": "1.0.0",
       "author": { "name": "AbdulrazzaqDevelopment" },
@@ -67,7 +67,7 @@
     },
     {
       "name": "pnpai-verification-python",
-      "source": "pnpai-verification-python",
+      "source": "./plugins/pnpai-verification-python",
       "description": "Verifier preset for Python projects.",
       "version": "1.0.0",
       "author": { "name": "AbdulrazzaqDevelopment" },
