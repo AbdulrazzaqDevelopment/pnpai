@@ -91,7 +91,7 @@ function detectClaudeCode() {
   return r.status === 0 ? r.stdout.trim() : null;
 }
 
-async function pickOne(rl, question, options) {
+async function pickOne(ask, question, options) {
   console.log('');
   console.log(sty(question, c.bold));
   const entries = Object.entries(options);
@@ -99,7 +99,7 @@ async function pickOne(rl, question, options) {
     console.log(`  ${sty(`[${i + 1}]`, c.cyan)} ${sty(key, c.bold)}  ${sty(desc, c.dim)}`);
   });
   while (true) {
-    const a = (await rl.question(sty('  → ', c.cyan))).trim();
+    const a = (await ask(sty('  → ', c.cyan))).trim();
     const idx = parseInt(a, 10);
     if (idx >= 1 && idx <= entries.length) return entries[idx - 1][0];
     if (entries.find(([k]) => k === a)) return a;
@@ -107,11 +107,49 @@ async function pickOne(rl, question, options) {
   }
 }
 
-async function confirm(rl, question, defaultYes = true) {
+async function confirm(ask, question, defaultYes = true) {
   const hint = defaultYes ? 'Y/n' : 'y/N';
-  const a = (await rl.question(`${question} ${sty(`[${hint}]`, c.dim)} `)).trim().toLowerCase();
+  const a = (await ask(`${question} ${sty(`[${hint}]`, c.dim)} `)).trim().toLowerCase();
   if (a === '') return defaultYes;
   return a.startsWith('y');
+}
+
+// Build an ask(prompt) function suitable for the current stdin mode.
+//
+// TTY mode uses readline.question normally. Non-TTY (piped stdin) cannot use
+// readline.question for multiple prompts: with all input arriving before the
+// first .question() call, only the first 'line' event has a listener and the
+// rest are silently dropped, leaving every subsequent question hanging
+// forever (Node exits with code 13). We pre-drain stdin and dispatch from
+// the buffered queue instead.
+async function makeAsker() {
+  if (input.isTTY) {
+    const rl = createInterface({ input, output });
+    return {
+      ask: (prompt) => rl.question(prompt),
+      close: () => rl.close(),
+    };
+  }
+  input.setEncoding('utf8');
+  let raw = '';
+  for await (const chunk of input) raw += chunk;
+  // Split on LF, drop only the single trailing empty element from a final newline.
+  const lines = raw.split(/\r?\n/);
+  if (lines.length && lines[lines.length - 1] === '') lines.pop();
+  let i = 0;
+  return {
+    ask: async (prompt) => {
+      output.write(prompt);
+      if (i >= lines.length) {
+        output.write('\n');
+        throw new Error('pnpai init: piped stdin exhausted before all prompts were answered');
+      }
+      const a = lines[i++];
+      output.write(a + '\n');
+      return a;
+    },
+    close: () => {},
+  };
 }
 
 function writeRecipe(repoRoot, plugins, choices) {
@@ -162,18 +200,18 @@ async function cmdInit() {
   if (detectedPlatform) console.log(sty(`  Detected:   `, c.dim) + sty(detectedPlatform, c.green));
   if (detectedEcosystem) console.log(sty(`  Ecosystem:  `, c.dim) + sty(detectedEcosystem, c.green));
 
-  const rl = createInterface({ input, output });
+  const { ask, close } = await makeAsker();
   try {
-    const role = await pickOne(rl, 'Which role?', CATALOG.roles);
-    const platform = await pickOne(rl, 'Where does the work live?', CATALOG.platforms);
-    const verification = await pickOne(rl, 'Which verification preset?', CATALOG.verification);
+    const role = await pickOne(ask, 'Which role?', CATALOG.roles);
+    const platform = await pickOne(ask, 'Where does the work live?', CATALOG.platforms);
+    const verification = await pickOne(ask, 'Which verification preset?', CATALOG.verification);
     const plugins = ['pnpai-core', role, platform, verification];
 
     console.log('');
     console.log(sty('  Plan:', c.bold));
     plugins.forEach((p) => console.log(`    ${sty('+', c.green)} ${p}`));
     console.log('');
-    if (!(await confirm(rl, '  Proceed?', true))) {
+    if (!(await confirm(ask, '  Proceed?', true))) {
       console.log(sty('  Aborted.', c.yellow));
       return;
     }
@@ -193,7 +231,7 @@ async function cmdInit() {
     console.log(sty('  Then: > Start the workflow for <work-item-id>', c.green));
     console.log('');
   } finally {
-    rl.close();
+    close();
   }
 }
 

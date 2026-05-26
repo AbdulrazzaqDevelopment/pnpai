@@ -10,7 +10,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "test": "node --test test/smoke.test.mjs",
+    "test": "node --test test/*.test.mjs",
     "lint": "node bin/pnpai.mjs version",
     "doctor": "node bin/pnpai.mjs doctor"
   },
